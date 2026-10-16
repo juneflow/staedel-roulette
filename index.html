@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Random Image Viewer</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #222;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+        .container {
+            text-align: center;
+        }
+        img {
+            max-width: 90vw;
+            max-height: 70vh;
+            border-radius: 8px;
+        }
+        .metadata {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #ccc;
+        }
+        .staedel-link {
+            margin-top: 15px;
+            font-size: 16px;
+        }
+        .staedel-link a {
+            color: #4a9eff;
+            text-decoration: none;
+        }
+        .staedel-link a:hover {
+            text-decoration: underline;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img id="randomImage" src="" alt="Random image">
+        <div class="metadata" id="metadata"></div>
+        <div class="staedel-link" id="staedelLink"></div>
+        <br>
+        <button onclick="nextImage()">Next Image</button>
+    </div>
+
+    <script>
+        let data = [];
+
+        fetch('urls.json')
+            .then(r => r.json())
+            .then(json => {
+                data = json;
+                nextImage();
+            });
+
+        function nextImage() {
+            if (data.length === 0) return;
+            const item = data[Math.floor(Math.random() * data.length)];
+            document.getElementById('randomImage').src = item.url;
+            document.getElementById('metadata').textContent = item.metadata;
+            document.getElementById('staedelLink').innerHTML = 
+                `Städel Link: <a href="${item.staedel_link}" target="_blank">${item.staedel_link}</a>`;
+        }
+    </script>
+</body>
+</html>
